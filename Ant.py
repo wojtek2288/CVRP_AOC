@@ -27,9 +27,9 @@ class Ant(ABC):
 
     @staticmethod
     def initPheromones(graph: nx.Graph):
-        for node1_id in graph.nodes():
-            for node2_id in graph.nodes():
-                Ant.pheromones[(node1_id, node2_id)] = 1
+        for node1Id in graph.nodes():
+            for node2Id in graph.nodes():
+                Ant.pheromones[(node1Id, node2Id)] = 1
 
     @staticmethod
     def updatePheromones(evaporFactor: float, bestAntDistance: float, bestAntPath: list):
@@ -51,11 +51,11 @@ class BasicAnt(Ant):
 
     def chooseNextNode(self, graph: nx.Graph, alpha: float, beta: float):
         # Get unvisited nodes
-        unvisited_nodes = [node_id for node_id in graph.nodes() if node_id not in self.visited]
+        unvisitedNodes = [nodeId for nodeId in graph.nodes() if nodeId not in self.visited]
         
         # Calculate probabilities of visiting each unvisited node
         probabilities = {}
-        for node_id in unvisited_nodes:
+        for node_id in unvisitedNodes:
             if graph.nodes[node_id]['demand'] <= self.capacityLeft:
                 pheromone = BasicAnt.pheromones[(self.currentNode, node_id)]
                 heuristic = 1 / graph[self.currentNode][node_id]['weight']
@@ -76,19 +76,19 @@ class GreedyAnt(Ant):
 
     def chooseNextNode(self, graph: nx.Graph, alpha: float, beta: float):
         # Get unvisited nodes
-        unvisited_nodes = [node_id for node_id in graph.nodes() if node_id not in self.visited]
-        reachable_nodes = []
+        unvisitedNodes = [nodeId for nodeId in graph.nodes() if nodeId not in self.visited]
+        reachableNodes = []
 
-        for node_id in unvisited_nodes:
+        for node_id in unvisitedNodes:
             if graph.nodes[node_id]['demand'] <= self.capacityLeft:
-                reachable_nodes.append((node_id, graph[self.currentNode][node_id]['weight']))
+                reachableNodes.append((node_id, graph[self.currentNode][node_id]['weight']))
 
-        if len(reachable_nodes) == 0:
+        if len(reachableNodes) == 0:
             nextNode = 1
             self.capacityLeft = self.capacity
         else:
-            reachable_nodes = sorted(reachable_nodes, key=lambda x: x[1])
-            smallest_nodes = [node[0] for node in reachable_nodes[:3]]
+            reachableNodes = sorted(reachableNodes, key=lambda x: x[1])
+            smallest_nodes = [node[0] for node in reachableNodes[:3]]
             nextNode = random.choice(smallest_nodes)
 
         self.goToNextNode(nextNode, graph)

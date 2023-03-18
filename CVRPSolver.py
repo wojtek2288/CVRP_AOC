@@ -31,7 +31,7 @@ def solve(
                 if ant.distance >= sMax:
                     break
 
-            ant.returnToDepot(depot=1, graph=graph)
+            ant.returnToDepot(1, graph)
             if ant.distance > sMax:
                 break
 
