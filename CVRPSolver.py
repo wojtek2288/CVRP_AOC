@@ -10,8 +10,8 @@ def solve(
         numAnts=50,
         maxIterations=500,
         evaporFactor=0.1,
-        alpha=2,
-        beta=3):
+        alpha=1,
+        beta=2):
 
     antFactory.initPheromones(graph)
     bestSolution = None
@@ -42,6 +42,7 @@ def solve(
                 if node1 != node2:
                     solution.append((node1, node2))
             solutions.append({'path': solution, 'distance': ant.distance})
+            ant.updatePheromones()
 
         if len(solutions) > 0:
             bestAnt = min(solutions, key=lambda x: x['distance'])
@@ -50,7 +51,8 @@ def solve(
                 bestSolution = bestAnt['path']
                 bestDistance = bestAnt['distance']
 
-            antFactory.updatePheromones(evaporFactor, bestDistance, bestSolution)
+            antFactory.updatePheromones(bestSolution, bestDistance)
+            antFactory.evaporatePheromones(evaporFactor)
 
             print(str(iteration) + ": " + str(round(bestAnt['distance'], 2)))
         else:

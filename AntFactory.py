@@ -9,7 +9,10 @@ class AntFactory(ABC):
     def initPheromones(self, graph: nx.Graph):
         raise NotImplementedError()
 
-    def updatePheromones(self, evaporFactor: float, bestAntDistance: float, bestAntPath: list):
+    def updatePheromones(self, bestSolution: list, bestDistance: float):
+        raise NotImplementedError()
+
+    def evaporatePheromones(self, evaporFactor: float):
         raise NotImplementedError()
     
 class BasicAntFactory(AntFactory):
@@ -19,8 +22,37 @@ class BasicAntFactory(AntFactory):
     def initPheromones(self, graph: nx.Graph):
         Ant.BasicAnt.initPheromones(graph)
 
-    def updatePheromones(self, evaporFactor: float, bestAntDistance: float, bestAntPath: list):
-        Ant.BasicAnt.updatePheromones(evaporFactor, bestAntDistance, bestAntPath)
+    def updatePheromones(self, bestSolution: list, bestDistance: float):
+        pass
+
+    def evaporatePheromones(self, evaporFactor: float):
+        Ant.BasicAnt.evaporatePheromones(evaporFactor)
+
+class ClosestOnlyAntFactory(AntFactory):
+    def createAnt(self, currentNode: int, capacity: int, graph: nx.Graph):
+        return Ant.BasicAnt(currentNode, capacity, graph)
+
+    def initPheromones(self, graph: nx.Graph):
+        Ant.ClosestOnlyAnt.initPheromones(graph)
+
+    def updatePheromones(self, bestSolution: list, bestDistance: float):
+        pass
+
+    def evaporatePheromones(self, evaporFactor: float):
+        Ant.ClosestOnlyAnt.evaporatePheromones(evaporFactor)
+
+class EliteAntFactory(AntFactory):
+    def createAnt(self, currentNode: int, capacity: int, graph: nx.Graph):
+        return Ant.EliteAnt(currentNode, capacity, graph)
+
+    def initPheromones(self, graph: nx.Graph):
+        Ant.EliteAnt.initPheromones(graph)
+
+    def updatePheromones(self, bestSolution: list, bestDistance: float):
+        Ant.EliteAnt.updateBestPheromones(bestSolution, bestDistance)
+
+    def evaporatePheromones(self, evaporFactor: float):
+        Ant.ClosestOnlyAnt.evaporatePheromones(evaporFactor)
 
 class GreedyAntFactory(AntFactory):
     def createAnt(self, currentNode: int, capacity: int, graph: nx.Graph):
@@ -29,5 +61,8 @@ class GreedyAntFactory(AntFactory):
     def initPheromones(self, graph: nx.Graph):
         pass
 
-    def updatePheromones(self, evaporFactor: float, bestAntDistance: float, bestAntPath: list):
+    def updatePheromones(self, bestSolution: list, bestDistance: float):
+        pass
+
+    def evaporatePheromones(self, evaporFactor: float):
         pass
