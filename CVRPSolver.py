@@ -16,6 +16,7 @@ def solve(
     antFactory.initPheromones(graph)
     bestSolution = None
     bestDistance = float('inf')
+    bestDistances = []
 
     for iteration in range(maxIterations):
         # Construct solutions with ants
@@ -51,6 +52,7 @@ def solve(
                 bestSolution = bestAnt['path']
                 bestDistance = bestAnt['distance']
 
+            bestDistances.append(bestAnt['distance'])
             antFactory.updatePheromones(bestSolution, bestDistance)
             antFactory.evaporatePheromones(evaporFactor)
 
@@ -58,4 +60,4 @@ def solve(
         else:
             print(str(iteration) + ": No solution found")
 
-    return bestSolution, bestDistance
+    return bestSolution, bestDistance, bestDistances

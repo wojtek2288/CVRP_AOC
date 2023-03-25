@@ -28,11 +28,14 @@ def readInputFile(filename):
 
     # Create graph with euclidean distances
     graph = nx.Graph()
+    i = 1
     for node1 in coordinates:
         for node2 in coordinates:
             if node1 < node2:
-                dist = math.sqrt((coordinates[node1][0] - coordinates[node2][0])**2 + 
-                                 (coordinates[node1][1] - coordinates[node2][1])**2)
+                dist = round(math.sqrt((coordinates[node1][0] - coordinates[node2][0])**2 + 
+                                 (coordinates[node1][1] - coordinates[node2][1])**2))
+                graph.add_node(node1, pos = (coordinates[node1][0], coordinates[node1][1]))
+                graph.add_node(node2, pos = (coordinates[node2][0], coordinates[node2][1]))
                 graph.add_edge(node1, node2, weight=dist)
 
     # Add capacities as node attributes
