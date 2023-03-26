@@ -3,7 +3,9 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import AntFactory
 import CVRPSolver as cvrp
+import random
 
+random.seed(0)
 # Read input file and extract node attributes
 graph, capacity = DataReader.readInputFile("inputs/E-n22-k4.txt")
 pos = nx.get_node_attributes(graph, 'pos')
@@ -11,7 +13,7 @@ demands = nx.get_node_attributes(graph, 'demand')
 
 # Get solution
 iterationCount = 500
-bestSolution, bestDistance, distances = cvrp.solve(AntFactory.ClosestOnlyAntFactory(), graph, capacity, 10000, 50, iterationCount)
+bestSolution, bestDistance, distances = cvrp.solve(AntFactory.EliteAntFactory(), graph, capacity, 10000, 50, iterationCount)
 
 # Set the color of the labels based on the demands
 node_colors = ['red' if demand == 0 else '#ADD8E6' for demand in demands.values()]

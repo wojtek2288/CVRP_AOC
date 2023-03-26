@@ -30,7 +30,7 @@ class BasicAntFactory(AntFactory):
 
 class ClosestOnlyAntFactory(AntFactory):
     def createAnt(self, currentNode: int, capacity: int, graph: nx.Graph):
-        return Ant.BasicAnt(currentNode, capacity, graph)
+        return Ant.ClosestOnlyAnt(currentNode, capacity, graph)
 
     def initPheromones(self, graph: nx.Graph):
         Ant.ClosestOnlyAnt.initPheromones(graph)
@@ -52,7 +52,7 @@ class EliteAntFactory(AntFactory):
         Ant.EliteAnt.updateBestPheromones(bestSolution, bestDistance)
 
     def evaporatePheromones(self, evaporFactor: float):
-        Ant.ClosestOnlyAnt.evaporatePheromones(evaporFactor)
+        Ant.EliteAnt.evaporatePheromones(evaporFactor)
 
 class GreedyAntFactory(AntFactory):
     def createAnt(self, currentNode: int, capacity: int, graph: nx.Graph):
